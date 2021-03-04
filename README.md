@@ -29,7 +29,7 @@ and is therefore encrypted by the Microsoft Data Protection API
 
 Invoke the Client on a saved Config File
 ```powershell 
-    $APIClient = Invoke-EzNameAPI -FilePath <your config clixml>
+$APIClient = Invoke-EzNameAPI -FilePath <your config clixml>
 ```
 
 ## Methods 
@@ -37,3 +37,7 @@ Invoke the Client on a saved Config File
 Unfortunately there is no documentation on the API besides the PHP-SDK
 Take a look at the Powershell Help for Invoke-EzNameAPI and the 
 Methods in EzNameClass.ps1 to see all available Methods and their parameters
+
+## Debugging
+
+Use the -Debug switch to Output Request related Data for troubleshooting

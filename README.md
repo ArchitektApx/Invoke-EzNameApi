@@ -13,7 +13,7 @@ Please use this only for the first time you use this Client.
 
 ```powershell   
 $APIClient = Invoke-EzNameAPI -APIKey <..> -APISalt <..> -APIUserID >..> -APIUserMail <..> -APISigningSalt <..>
-``
+```
 
 ## Save your API Config securely
 You can save your APIConfig securely and encrypted as a File for later use

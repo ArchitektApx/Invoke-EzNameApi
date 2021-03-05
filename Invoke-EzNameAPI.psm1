@@ -47,7 +47,6 @@
     $APIClient.deleteDomain(1) - delete a Domain
     $APIClient.restoreDomain(1) - Re-purchase a previously deleted domain.
 
-
     # Contact related Methods 
 
     $APIClient.listContact() - get all contacts
@@ -77,10 +76,8 @@ function Invoke-EzNameAPI {
     [CmdletBinding()]
     param(
         [Parameter(Mandatory = $true, ParameterSetName = 'FromStrings')]
-        [ValidateNotNullOrEmpty()]
         [string]$APIKey,
         [Parameter(Mandatory = $true, ParameterSetName = 'FromStrings')]
-        [ValidateNotNullOrEmpty()]
         [string]$APISalt,
         [Parameter(Mandatory = $true, ParameterSetName = 'FromStrings')]
         [ValidateNotNullOrEmpty()]
@@ -89,19 +86,27 @@ function Invoke-EzNameAPI {
         [ValidateNotNullOrEmpty()]
         [string]$APIUserMail,
         [Parameter(Mandatory = $true, ParameterSetName = 'FromStrings')]
-        [ValidateNotNullOrEmpty()]
         [string]$APISigningSalt,
         [Parameter(Mandatory = $true, ParameterSetName = 'FromFilePath')]
         [ValidateNotNullOrEmpty()]
         [string]$FilePath
     )
-
-    switch ($PSCmdlet.ParameterSetName) {
-        'FromStrings' {
-            [EzNameAPIClient]::New($APIKey, $APISalt, $APIUserID, $APIUserMail, $APISigningSalt, $PSBoundParameters['Debug'].IsPresent)
-        }
-        'FromFilePath' {
-            [EzNameAPIClient]::New($FilePath)
+    
+    process {
+        switch ($PSCmdlet.ParameterSetName) {
+            'FromStrings' {
+                [EzNameAPIClient]::New($APIKey, $APISalt, $APIUserID, $APIUserMail, $APISigningSalt, $PSBoundParameters['Debug'].IsPresent)
+                $APIKey = $null
+                $APISalt = $null
+                $APISigningSalt = $null
+                Remove-Variable -Name APIKey
+                Remove-Variable -Name APISalt
+                Remove-Variable -Name APISigningSalt
+                [System.GC]::Collect()
+            }
+            'FromFilePath' {
+                [EzNameAPIClient]::New($FilePath, $PSBoundParameters['Debug'].IsPresent)
+            }
         }
     }
 

@@ -22,9 +22,14 @@ class EzNameAPIClient {
         $this.APIConfigToAuthHeader([PSCustomObject]$this.APIConfig)
     }
     # Construtctor for FilePath
-    EzNameAPIClient ([string]$FilePath) {
+    EzNameAPIClient ([string]$FilePath, [bool]$debug) {
         $this.APIConfig = Import-Clixml -Path $FilePath
         $this.APIConfigToAuthHeader([PSCustomObject]$this.APIConfig)
+
+        # override the Debug value of the config file if -Debug parameter was set
+        if ($debug -eq $true) {
+            $this.APIConfig.APIDebug = $true
+        }
     }
 
     <# 
@@ -192,11 +197,11 @@ class EzNameAPIClient {
 
     hidden [void] WriteDebug($data) {
         if ($this.APIConfig.APIDebug -eq $true) {
-            Write-Host $(Get-Date).ToString() 
+            Write-Debug $(Get-Date).ToString() 
             if ($data -is [string]) {
-                Write-Host ($data + [System.Environment]::NewLine)
+                Write-Debug ($data + [System.Environment]::NewLine)
             } else {
-                Write-Host ($data | Out-String).Trim()
+                Write-Debug ($data | Out-String).Trim()
             }
         }
     }
